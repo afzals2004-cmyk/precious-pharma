@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shopping Cart | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .cart-container {
+            margin-top: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 1rem;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .cart-summary {
+            margin-top: 2rem;
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: right;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Precious Pharma</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#">Shop</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container cart-container">
+        <h1>Your Shopping Cart</h1>
+        <div id="cart-items">
+            <!-- Items here -->
+        </div>
+
+        <div class="cart-summary">
+            <p>Total: <span id="cart-total" class="total-price">$0.00</span></p>
+            <button class="btn-primary" onclick="window.location.href='/checkout.html'">Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <script>
+        const getCart = () => JSON.parse(localStorage.getItem('cart')) || [];
+        const saveCart = (c) => localStorage.setItem('cart', JSON.stringify(c));
+
+        function renderCart() {
+            const cart = getCart();
+            const container = document.getElementById('cart-items');
+
+            if (cart.length === 0) {
+                container.innerHTML = '<p>Your cart is empty.</p>';
+                document.querySelector('.cart-summary').style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = cart.map((item, index) => `
+          <div class="cart-item">
+            <div style="display:flex; align-items:center;">
+              <img src="${item.image_url}" alt="${item.name}">
+              <div class="item-details">
+                <h3>${item.name}</h3>
+                <p>$${Number(item.price).toFixed(2)}</p>
+              </div>
+            </div>
+            <button class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="removeItem(${index})">Remove</button>
+          </div>
+        `).join('');
+
+            const total = cart.reduce((sum, item) => sum + Number(item.price), 0);
+            document.getElementById('cart-total').innerText = '$' + total.toFixed(2);
+        }
+
+        window.removeItem = (index) => {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCart();
+        };
+
+        renderCart();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .about-header {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: var(--color-bg-alt);
+            margin-bottom: 2rem;
+        }
+
+        .about-header h1 {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .value-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .value-card h3 {
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Precious Pharma</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#">Shop</a>
+                <a href="/about.html" class="active">About</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/cart.html'">🛒 <span
+                        class="cart-count">0</span></button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="about-header">
+        <div class="container">
+            <h1>Our Story</h1>
+            <p>Redefining Healthcare with Elegance and Care</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="about-content">
+            <p>
+                Founded in 2025, <strong>Precious Pharma</strong> was born from a simple yet powerful vision: to make
+                premium healthcare accessible, reliable, and swift. We believe that wellness is the ultimate luxury, and
+                accessing the medicines and supplements you need should be a seamless, dignified experience.
+            </p>
+            <br>
+            <p>
+                Inspired by the timeless traditions of healing and modernized by cutting-edge technology, we curate a
+                selection of the world's finest healthcare products. From daily essentials to specialized treatments,
+                every item in our inventory is vetted for quality and authenticity.
+            </p>
+
+            <div class="values-grid">
+                <div class="value-card">
+                    <h3>Integrity</h3>
+                    <p>We source only from certified manufacturers and authorized distributors to ensure 100%
+                        authenticity.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Care</h3>
+                    <p>Your health is our priority. Our support team is dedicated to guiding you through your wellness
+                        journey.</p>
+                </div>
+                <div class="value-card">
+                    <h3>Speed</h3>
+                    <p>We understand the urgency of health. Our logistics network ensures your orders arrive when you
+                        need them most.</p>
+                </div>
+            </div>
+
+            <h2 style="color: var(--color-primary); text-align: center; margin-bottom: 1rem;">Join Our Journey</h2>
+            <p style="text-align: center;">
+                Precious Pharma is more than just a store; it's a commitment to a healthier, happier you. Thank you for
+                trusting us with your most precious asset—your health.
+            </p>
+        </div>
+    </main>
+
+    <footer style="margin-top: 4rem;">
+        <div class="container footer-content">
+            <p>&copy; 2025 Precious Pharma. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/src/main.js" type="module"></script>
+</body>
+
+</html>

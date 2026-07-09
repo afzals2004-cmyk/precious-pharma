@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .contact-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h2 {
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item h4 {
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        @media (max-width: 768px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Precious Pharma</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#">Shop</a>
+                <a href="/about.html">About</a>
+                <a href="/contact.html" class="active">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/cart.html'">🛒 <span
+                        class="cart-count">0</span></button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h2>Get in Touch</h2>
+                <p style="margin-bottom: 2rem; color: #666;">
+                    Have questions about your order or need pharmaceutical advice? Our team is here to help.
+                </p>
+
+                <div class="info-item">
+                    <h4>Email Us</h4>
+                    <p>curepharmaa@hotmail.com</p>
+                </div>
+                <div class="info-item">
+                    <h4>Call Us</h4>
+                    <p>+1 (800) PRECIOUS</p>
+                </div>
+                <div class="info-item">
+                    <h4>Headquarters</h4>
+                    <p>Avenue Marcel Thiry 72,<br>1200 Woluwe-Saint-Lambert, Belgium</p>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form onsubmit="event.preventDefault(); alert('Message sent! We will reply shortly.');">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="John Doe">
+
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="john@example.com">
+
+                    <label>Message</label>
+                    <textarea rows="5" required placeholder="How can we help you?"></textarea>
+
+                    <button type="submit" class="btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer style="margin-top: 4rem;">
+        <div class="container footer-content">
+            <p>&copy; 2025 Precious Pharma. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/src/main.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .login-box {
+            max-width: 400px;
+            margin: 4rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+
+        select.status-select {
+            padding: 0.4rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f7f9fc;">
+
+    <!-- LOGIN VIEW -->
+    <div id="login-view">
+        <div class="login-box">
+            <h2 style="color: var(--color-primary); margin-bottom: 0.5rem;">Admin Login</h2>
+            <p style="color: #666; margin-bottom: 2rem;">Please sign in to access the dashboard</p>
+            <form id="admin-login-form">
+                <div style="margin-bottom: 1rem; text-align: left;">
+                    <label style="display:block; margin-bottom:0.5rem; font-weight:500;">Email</label>
+                    <input type="email" id="admin-email" required
+                        style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <div style="margin-bottom: 1.5rem; text-align: left;">
+                    <label style="display:block; margin-bottom:0.5rem; font-weight:500;">Password</label>
+                    <input type="password" id="admin-password" required
+                        style="width:100%; padding:0.8rem; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <p id="login-error" style="color: red; margin-top: 1rem; display: none;"></p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboard-view" class="hidden">
+        <header style="background: var(--color-primary);">
+            <nav class="container">
+                <div class="logo" style="color: white;">Precious Admin</div>
+                <div class="nav-links">
+                    <a href="/" style="color: white; opacity: 0.8;">View Site</a>
+                    <a href="#" onclick="logout()" style="color: white;">Logout</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-users">...</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-orders">...</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-revenue">...</div>
+                    <div class="stat-label">Total Revenue</div>
+                </div>
+            </div>
+
+            <h2 style="margin-bottom: 1rem; color: var(--color-primary);">Recent Orders</h2>
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <tr>
+                            <td colspan="6" style="text-align:center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const loginView = document.getElementById('login-view');
+        const dashboardView = document.getElementById('dashboard-view');
+        const loginForm = document.getElementById('admin-login-form');
+        const errorMsg = document.getElementById('login-error');
+
+        // Check Auth on Load
+        const checkAuth = () => {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (token && user.role === 'admin') {
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        };
+
+        const showLogin = () => {
+            loginView.classList.remove('hidden');
+            dashboardView.classList.add('hidden');
+        };
+
+        const showDashboard = () => {
+            loginView.classList.add('hidden');
+            dashboardView.classList.remove('hidden');
+            fetchStats();
+            fetchOrders();
+        };
+
+        window.logout = () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            showLogin();
+        };
+
+        // Login Logic
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            errorMsg.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    if (data.user.role === 'admin') {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        showDashboard();
+                    } else {
+                        errorMsg.innerText = 'Access Denied: You are not an admin.';
+                        errorMsg.style.display = 'block';
+                    }
+                } else {
+                    errorMsg.innerText = data.error || 'Login failed';
+                    errorMsg.style.display = 'block';
+                }
+            } catch (err) {
+                errorMsg.innerText = 'Network error';
+                errorMsg.style.display = 'block';
+            }
+        });
+
+        // Dashboard Logic
+        async function fetchStats() {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/admin/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Unauthorized');
+                const data = await res.json();
+
+                document.getElementById('stat-users').innerText = data.users;
+                document.getElementById('stat-orders').innerText = data.orders;
+                document.getElementById('stat-revenue').innerText = '$' + Number(data.revenue).toFixed(2);
+            } catch (err) { console.error(err); }
+        }
+
+        async function fetchOrders() {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/admin/orders', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Unauthorized');
+                const orders = await res.json();
+
+                const tbody = document.getElementById('orders-table-body');
+                if (orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No orders found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = orders.map(order => `
+             <tr>
+               <td>#${order.id}</td>
+               <td>${order.user_name}</td>
+               <td>${new Date(order.created_at).toLocaleDateString()}</td>
+               <td>$${Number(order.total_price).toFixed(2)}</td>
+               <td>
+                 <span class="status-badge status-${order.status}">${order.status.toUpperCase()}</span>
+               </td>
+               <td>
+                 <select class="status-select" onchange="updateStatus(${order.id}, this.value)">
+                   <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
+                   <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                   <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                   <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                 </select>
+               </td>
+             </tr>
+           `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.updateStatus = async (id, status) => {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/admin/orders/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+                if (res.ok) {
+                    alert('Status updated!');
+                    fetchOrders();
+                }
+            } catch (err) {
+                alert('Failed to update');
+            }
+        };
+
+        // Init
+        checkAuth();
+    </script>
+</body>
+
+</html>

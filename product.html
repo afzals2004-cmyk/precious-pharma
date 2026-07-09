@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .product-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+
+        .detail-image {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .detail-info h1 {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-price {
+            font-size: 1.5rem;
+            color: var(--color-text);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .detail-desc {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .product-detail {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Precious Pharma</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/cart.html">Cart</a>
+            </div>
+            <div class="nav-actions">
+                <button class="icon-btn" onclick="window.location.href='/cart.html'">🛒 <span
+                        class="cart-count">0</span></button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="product-content" class="product-detail">
+            <p>Loading product...</p>
+        </div>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('id');
+        let currentProduct = null;
+
+        const getCart = () => JSON.parse(localStorage.getItem('cart')) || [];
+        const saveCart = (c) => localStorage.setItem('cart', JSON.stringify(c));
+
+        async function fetchProduct() {
+            try {
+                const res = await fetch(`/api/products/${id}`);
+                if (!res.ok) throw new Error('Not found');
+                currentProduct = await res.json();
+
+                document.getElementById('product-content').innerHTML = `
+             <img src="${currentProduct.image_url}" alt="${currentProduct.name}" class="detail-image">
+             <div class="detail-info">
+               <h1>${currentProduct.name}</h1>
+               <span class="detail-price">$${Number(currentProduct.price).toFixed(2)}</span>
+               <p class="detail-desc">${currentProduct.description || ''}</p>
+               <button class="btn-primary" onclick="addToCart()">Add to Cart</button>
+             </div>
+           `;
+
+                document.title = `${currentProduct.name} | Precious Pharma`;
+            } catch (err) {
+                document.getElementById('product-content').innerHTML = '<p>Product not found.</p>';
+            }
+        }
+
+        function addToCart() {
+            if (!currentProduct) return;
+            const cart = getCart();
+            cart.push(currentProduct);
+            saveCart(cart);
+
+            document.querySelector('.cart-count').innerText = cart.length;
+            alert('Added to cart!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.cart-count').innerText = getCart().length;
+        });
+
+        if (id) fetchProduct();
+    </script>
+</body>
+
+</html>

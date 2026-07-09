@@ -1,0 +1,72 @@
+export const translations = {
+    en: {
+        nav_home: "Home",
+        nav_shop: "Shop",
+        nav_about: "About",
+        nav_contact: "Contact",
+        nav_login: "Login",
+        hero_title_1: "Your Health,",
+        hero_title_2: "Our Priority",
+        hero_desc: "Experience the future of online pharmacy with premium care and swift delivery.",
+        hero_btn: "Shop Now",
+        section_premium: "Premium Selection",
+        section_desc: "Curated healthcare essentials for you.",
+        footer_copy: "&copy; 2025 Precious Pharma. All rights reserved."
+    },
+    ar: {
+        nav_home: "الرئيسية",
+        nav_shop: "تسوق",
+        nav_about: "من نحن",
+        nav_contact: "اتصل بنا",
+        nav_login: "دخول",
+        hero_title_1: "صحتك،",
+        hero_title_2: "أولويتنا",
+        hero_desc: "اكتشف مستقبل الصيدلية الإلكترونية مع رعاية متميزة وتوصيل سريع.",
+        hero_btn: "تسوق الآن",
+        section_premium: "تشكيلة متميزة",
+        section_desc: "منتجات رعاية صحية مختارة خصيصاً لك.",
+        footer_copy: "&copy; 2025 Precious Pharma. جميع الحقوق محفوظة."
+    },
+    fr: {
+        nav_home: "Accueil",
+        nav_shop: "Boutique",
+        nav_about: "À propos",
+        nav_contact: "Contact",
+        nav_login: "Connexion",
+        hero_title_1: "Votre Santé,",
+        hero_title_2: "Notre Priorité",
+        hero_desc: "Découvrez l'avenir de la pharmacie en ligne avec des soins premium.",
+        hero_btn: "Acheter",
+        section_premium: "Sélection Premium",
+        section_desc: "Des essentiels de santé choisis pour vous.",
+        footer_copy: "&copy; 2025 Precious Pharma. Tous droits réservés."
+    },
+    de: {
+        nav_home: "Startseite",
+        nav_shop: "Shop",
+        nav_about: "Über uns",
+        nav_contact: "Kontakt",
+        nav_login: "Anmelden",
+        hero_title_1: "Ihre Gesundheit,",
+        hero_title_2: "Unsere Priorität",
+        hero_desc: "Erleben Sie die Zukunft der Online-Apotheke mit Premium-Pflege.",
+        hero_btn: "Jetzt kaufen",
+        section_premium: "Premium Auswahl",
+        section_desc: "Ausgewählte Gesundheitsartikel für Sie.",
+        footer_copy: "&copy; 2025 Precious Pharma. Alle Rechte vorbehalten."
+    },
+    es: {
+        nav_home: "Inicio",
+        nav_shop: "Tienda",
+        nav_about: "Nosotros",
+        nav_contact: "Contacto",
+        nav_login: "Acceso",
+        hero_title_1: "Tu Salud,",
+        hero_title_2: "Nuestra Prioridad",
+        hero_desc: "Experimenta el futuro de la farmacia en línea con atención premium.",
+        hero_btn: "Comprar",
+        section_premium: "Selección Premium",
+        section_desc: "Esenciales de salud curados para ti.",
+        footer_copy: "&copy; 2025 Precious Pharma. Todos los derechos reservados."
+    }
+};

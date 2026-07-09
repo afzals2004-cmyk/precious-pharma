@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dashboard | Precious Pharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .dashboard-container {
+            max-width: 800px;
+            margin: 4rem auto;
+        }
+
+        .order-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-shipped {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Precious Pharma</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="#">Shop</a>
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container dashboard-container">
+        <h1 style="color: var(--color-primary); margin-bottom: 2rem;">My Orders</h1>
+        <div id="orders-list">
+            <p>Loading orders...</p>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initLocalization } from '/src/i18n.js';
+        initLocalization();
+
+        window.logout = () => {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        };
+
+        async function fetchOrders() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/orders', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!res.ok) throw new Error('Failed to fetch orders');
+                const orders = await res.json();
+
+                const container = document.getElementById('orders-list');
+                if (orders.length === 0) {
+                    container.innerHTML = '<p>No orders found.</p>';
+                    return;
+                }
+
+                container.innerHTML = orders.map(order => `
+             <div class="order-card">
+               <div class="order-header">
+                 <div>
+                   <strong>Order #${order.id}</strong><br>
+                   <span style="font-size:0.9rem; color:#666;">${new Date(order.created_at).toLocaleDateString()}</span>
+                 </div>
+                 <div style="text-align:right;">
+                   <span class="status-badge status-${order.status}">${order.status.toUpperCase()}</span><br>
+                   <strong>$${Number(order.total_price).toFixed(2)}</strong>
+                 </div>
+               </div>
+               <p>Items: View details (Coming Soon)</p>
+             </div>
+           `).join('');
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('orders-list').innerHTML = '<p>Error loading orders. Please login again.</p>';
+            }
+        }
+
+        fetchOrders();
+    </script>
+</body>
+
+</html>
